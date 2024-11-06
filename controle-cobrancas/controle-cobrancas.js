@@ -62,8 +62,8 @@ app.get('/Cobranca', (req, res, next) => {
 });
 
 // Método HTTP GET /Posto/:codigo - retorna o posto com base no codigo
-app.get('/Usuario/:cpf', (req, res, next) => {
-    db.get( `SELECT * FROM cobrancas WHERE cpf = ?`, 
+app.get('/Cobranca/:cpf', (req, res, next) => {
+    db.all( `SELECT * FROM cobrancas WHERE cpf = ?`,
             req.params.cpf, (err, result) => {
         if (err) { 
             console.log("Erro: "+err);
@@ -78,15 +78,15 @@ app.get('/Usuario/:cpf', (req, res, next) => {
 });
 
 //Método HTTP DELETE /Posto/:codigo - remove um posto
-app.delete('/Usuario/:cpf', (req, res, next) => {
-    db.run(`DELETE FROM usuarios WHERE cpf = ?`, req.params.cpf, function(err) {
+app.delete('/Cobranca/:codigo', (req, res, next) => {
+    db.run(`DELETE FROM cobrancas WHERE codigo = ?`, req.params.codigo, function(err) {
       if (err){
-         res.status(500).send('Erro ao remover usuario.');
+         res.status(500).send('Erro ao remover cobranca.');
       } else if (this.changes == 0) {
-         console.log("Usuario não encontrado.");
-         res.status(404).send('Usuario não encontrado.');
+         console.log("Cobranca não encontrada.");
+         res.status(404).send('CObranca não encontrado.');
       } else {
-         res.status(200).send('Usuario removido com sucesso!');
+         res.status(200).send('Cobranca deletada com sucesso!');
       }
    });
 });
