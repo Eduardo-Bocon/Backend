@@ -8,6 +8,8 @@ app.use(logger('dev'));
 function selectProxyHost(req) {
     if (req.path.startsWith('/Posto'))
         return 'http://localhost:8080/';
+    else if(req.path.startsWith('/Usuario'))
+        return 'http://localhost:8070/';
     
     else return null;
 }
