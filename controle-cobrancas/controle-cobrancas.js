@@ -25,9 +25,9 @@ var db = new sqlite3.Database('./dados.db', (err) => {
         console.log('Conectado ao SQLite!');
     });
 
-// Cria a tabela cadastro, caso ela não exista
+
 db.run(`CREATE TABLE IF NOT EXISTS cobrancas 
-        (cartao TEXT NOT NULL, valor INTEGER NOT NULL)`, 
+        (codigo INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, cartao TEXT NOT NULL, valor INTEGER NOT NULL, cpf TEXT NOT NULL)`, 
         [], (err) => {
            if (err) {
               console.log('ERRO: não foi possível criar tabela.');
@@ -37,8 +37,8 @@ db.run(`CREATE TABLE IF NOT EXISTS cobrancas
 
 // Método HTTP POST /Cadastro-Posto - cadastra um novo posto
 app.post('/Cobranca', (req, res, next) => {
-    db.run(`INSERT INTO cobrancas(cartao, valor) VALUES(?,?)`, 
-         [req.body.cartao, req.body.valor], (err) => {
+    db.run(`INSERT INTO cobrancas(cartao, valor, cpf) VALUES(?,?,?)`, 
+         [req.body.cartao, req.body.valor, req.body.cpf], (err) => {
         if (err) {
             console.log("Error: " + err);
             res.status(500).send('Erro ao realizar cobrança.');
@@ -63,32 +63,17 @@ app.get('/Cobranca', (req, res, next) => {
 
 // Método HTTP GET /Posto/:codigo - retorna o posto com base no codigo
 app.get('/Usuario/:cpf', (req, res, next) => {
-    db.get( `SELECT * FROM usuarios WHERE cpf = ?`, 
+    db.get( `SELECT * FROM cobrancas WHERE cpf = ?`, 
             req.params.cpf, (err, result) => {
         if (err) { 
             console.log("Erro: "+err);
             res.status(500).send('Erro ao obter dados.');
         } else if (result == null) {
-            console.log("Usuario não encontrado.");
-            res.status(404).send('Usuario não encontrado.');
+            console.log("Nenhuma cobrança encontrada.");
+            res.status(404).send('Nenhuma cobrança encontrada.');
         } else {
             res.status(200).json(result);
         }
-    });
-});
-
-// Método HTTP PATCH /Posto/:codigo - altera um posto
-app.patch('/Usuario/:cpf', (req, res, next) => {
-    db.run(`UPDATE usuarios SET nome = COALESCE(?,nome), email = COALESCE(?,email), cartao = COALESCE(?,cartao) WHERE cpf = ?`,
-           [req.body.nome, req.body.email, req.body.cartao, req.params.cpf], function(err) {
-            if (err){
-                res.status(500).send('Erro ao alterar dados.');
-            } else if (this.changes == 0) {
-                console.log("Usuario não encontrado.");
-                res.status(404).send('Usuario não encontrado.');
-            } else {
-                res.status(200).send('Usuario alterado com sucesso!');
-            }
     });
 });
 
