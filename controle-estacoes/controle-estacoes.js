@@ -13,8 +13,6 @@ app.listen(porta, () => {
  console.log('Servidor em execução na porta: ' + porta);
 });
 
-const axios = require('axios').default;
-
 app.get('/Estacao', (req, res, next) => {
     console.log("Estação está carregando...");
     res.send("Carregamento iniciado");
