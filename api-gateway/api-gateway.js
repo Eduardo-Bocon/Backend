@@ -10,9 +10,10 @@ function selectProxyHost(req) {
         return 'http://localhost:8080/';
     else if(req.path.startsWith('/Usuario'))
         return 'http://localhost:8070/';
-    if (req.path.startsWith('/Cobranca'))
+    else if (req.path.startsWith('/Cobranca'))
         return 'http://localhost:8060/'
-    
+    else if (req.path.startsWith('/Recarga'))
+        return 'http://localhost:8040/'
     else return null;
 }
 

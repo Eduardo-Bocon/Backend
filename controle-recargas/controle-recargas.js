@@ -62,3 +62,18 @@ app.post('/Recarga', (req, res, next) => {
         }
     });
 });
+
+app.get('/Recarga/:cpf', (req, res, next) => {
+    db.all( `SELECT * FROM recargas WHERE cpf = ?`,
+            req.params.cpf, (err, result) => {
+        if (err) { 
+            console.log("Erro: "+err);
+            res.status(500).send('Erro ao obter dados.');
+        } else if (result == null) {
+            console.log("Nenhuma recarga encontrada.");
+            res.status(404).send('Nenhuma recarga encontrada.');
+        } else {
+            res.status(200).json(result);
+        }
+    });
+});
