@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-// Inicia o Servidor na porta 8080
+// Inicia o Servidor na porta 8060
 let porta = 8060;
 app.listen(porta, () => {
  console.log('Servidor em execução na porta: ' + porta);
@@ -35,7 +35,7 @@ db.run(`CREATE TABLE IF NOT EXISTS cobrancas
            }
       });   
 
-// Método HTTP POST /Cadastro-Posto - cadastra um novo posto
+// Método HTTP POST /Cadastro-Cobranca - cadastra uma nova Cobranca
 app.post('/Cobranca', (req, res, next) => {
     db.run(`INSERT INTO cobrancas(cartao, valor, cpf) VALUES(?,?,?)`, 
          [req.body.cartao, req.body.valor, req.body.cpf], (err) => {
@@ -49,7 +49,7 @@ app.post('/Cobranca', (req, res, next) => {
     });
 });
 
-// Método HTTP GET /Cadastro-Postos - retorna todos os cadastros
+// Método HTTP GET /Cadastro-Cobrancas - retorna todos os cadastros
 app.get('/Cobranca', (req, res, next) => {
     db.all(`SELECT * FROM cobrancas`, [], (err, result) => {
         if (err) {
@@ -61,7 +61,7 @@ app.get('/Cobranca', (req, res, next) => {
     });
 });
 
-// Método HTTP GET /Posto/:codigo - retorna o posto com base no codigo
+// Método HTTP GET /Cobranca/:codigo - retorna a Cobranca com base no cpf
 app.get('/Cobranca/:cpf', (req, res, next) => {
     db.all( `SELECT * FROM cobrancas WHERE cpf = ?`,
             req.params.cpf, (err, result) => {
@@ -77,7 +77,7 @@ app.get('/Cobranca/:cpf', (req, res, next) => {
     });
 });
 
-//Método HTTP DELETE /Posto/:codigo - remove um posto
+//Método HTTP DELETE /Cobranca/:codigo - remove uma Cobranca
 app.delete('/Cobranca/:codigo', (req, res, next) => {
     db.run(`DELETE FROM cobrancas WHERE codigo = ?`, req.params.codigo, function(err) {
       if (err){
