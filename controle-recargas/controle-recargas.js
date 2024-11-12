@@ -56,8 +56,8 @@ app.post('/Recarga', (req, res, next) => {
                 await axios.post('http://localhost:8060/Cobranca', {cartao: usuario.data.cartao, valor: req.body.valor, cpf: req.body.cpf});
                 await axios.get('http://localhost:8050/Estacao');
               } catch (error) {
-                console.error("Erro ao carregar estação:", error);
-                res.status(500).json({ error: "Erro ao carregar estação" });
+                console.error("Erro ao realizar a recarga:", error);
+                res.status(500).json({ error: "Erro ao realizar a recarga" });
               }
             console.log('Recarga realizada com sucesso!');
             res.status(200).send('Recarga realizada com sucesso!');
